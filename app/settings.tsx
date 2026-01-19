@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Alert, TextInput, View } from 'react-native';
+import { Alert, View } from 'react-native';
 
 import PrimaryButton from '../components/PrimaryButton';
+import SettingsInput from '../components/SettingsInputField';
 import { loadSettings, saveSettings } from '../storage/settings';
 
 export default function SettingsScreen() {
@@ -15,41 +16,38 @@ export default function SettingsScreen() {
     });
   }, []);
 
- const save = async () => {
-  const phoneTrim = phone.trim();
-  const messageTrim = message.trim();
+  const save = async () => {
+    const phoneTrim = phone.trim();
+    const messageTrim = message.trim();
 
-  await saveSettings({ phone: phoneTrim, message: messageTrim });
+    await saveSettings({ phone: phoneTrim, message: messageTrim });
 
-  if (!phoneTrim || !messageTrim) {
-    let alertMsg = 'Niektóre pola są puste. ';
-    if (!phoneTrim && !messageTrim)
-      alertMsg += 'Funkcje "Wyślij SMS", "Zadzwoń" i "Udostępnij tekst" nie będą działać.';
-    else if (!phoneTrim)
-      alertMsg += 'Funkcje "Wyślij SMS" i "Zadzwoń" nie będą działać.';
-    else if (!messageTrim)
-      alertMsg += 'Funkcje "Wyślij SMS" i "Udostępnij tekst" nie będą działać.';
-    Alert.alert('Uwaga', alertMsg);
-  } else {
-    Alert.alert('Ustawienia zapisane pomyślnie');
-  }
-};
-
+    if (!phoneTrim || !messageTrim) {
+      let alertMsg = 'Niektóre pola są puste. ';
+      if (!phoneTrim && !messageTrim)
+        alertMsg += 'Funkcje "Wyślij SMS", "Zadzwoń" i "Udostępnij tekst" nie będą działać.';
+      else if (!phoneTrim)
+        alertMsg += 'Funkcje "Wyślij SMS" i "Zadzwoń" nie będą działać.';
+      else if (!messageTrim)
+        alertMsg += 'Funkcje "Wyślij SMS" i "Udostępnij tekst" nie będą działać.';
+      Alert.alert('Uwaga', alertMsg);
+    } else {
+      Alert.alert('Ustawienia zapisane pomyślnie');
+    }
+  };
 
   return (
     <View style={{ padding: 20 }}>
-      <TextInput
-        placeholder="Numer telefonu"
+      <SettingsInput
         value={phone}
         onChangeText={setPhone}
+        placeholder="Numer telefonu"
         keyboardType="phone-pad"
-        style={{ borderWidth: 1, borderColor: '#ccc', padding: 8, marginBottom: 10 }}
       />
-      <TextInput
-        placeholder="Treść wiadomości"
+      <SettingsInput
         value={message}
         onChangeText={setMessage}
-        style={{ borderWidth: 1, borderColor: '#ccc', padding: 8, marginBottom: 10 }}
+        placeholder="Treść SMS"
       />
       <PrimaryButton title="Zapisz" onPress={save} />
     </View>
