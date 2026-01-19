@@ -10,15 +10,31 @@ export default function SettingsScreen() {
 
   useEffect(() => {
     loadSettings().then(s => {
-      setPhone(s.phone);
-      setMessage(s.message);
+      setPhone(s.phone ?? '');
+      setMessage(s.message ?? '');
     });
   }, []);
 
-  const save = async () => {
-    await saveSettings({ phone, message });
+ const save = async () => {
+  const phoneTrim = phone.trim();
+  const messageTrim = message.trim();
+
+  await saveSettings({ phone: phoneTrim, message: messageTrim });
+
+  if (!phoneTrim || !messageTrim) {
+    let alertMsg = 'Niektóre pola są puste. ';
+    if (!phoneTrim && !messageTrim)
+      alertMsg += 'Funkcje "Wyślij SMS", "Zadzwoń" i "Udostępnij tekst" nie będą działać.';
+    else if (!phoneTrim)
+      alertMsg += 'Funkcje "Wyślij SMS" i "Zadzwoń" nie będą działać.';
+    else if (!messageTrim)
+      alertMsg += 'Funkcje "Wyślij SMS" i "Udostępnij tekst" nie będą działać.';
+    Alert.alert('Uwaga', alertMsg);
+  } else {
     Alert.alert('Ustawienia zapisane pomyślnie');
-  };
+  }
+};
+
 
   return (
     <View style={{ padding: 20 }}>
