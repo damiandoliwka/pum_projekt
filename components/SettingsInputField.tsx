@@ -8,7 +8,7 @@ type Props = {
   keyboardType?: 'default' | 'phone-pad';
 };
 
-export default function SettingsInput({ value, onChangeText, placeholder, keyboardType = 'default' }: Props) {
+export default function SettingsInputField({ value, onChangeText, placeholder, keyboardType = 'default' }: Props) {
   return (
     <TextInput
       value={value}

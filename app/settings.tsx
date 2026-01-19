@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Alert, View } from 'react-native';
-
 import PrimaryButton from '../components/PrimaryButton';
-import SettingsInput from '../components/SettingsInputField';
+import SettingsInputField from '../components/SettingsInputField';
 import { loadSettings, saveSettings } from '../storage/settings';
 
 export default function SettingsScreen() {
@@ -22,32 +21,36 @@ export default function SettingsScreen() {
 
     await saveSettings({ phone: phoneTrim, message: messageTrim });
 
-    if (!phoneTrim || !messageTrim) {
+    if(!phoneTrim || !messageTrim) {
       let alertMsg = 'Niektóre pola są puste. ';
-      if (!phoneTrim && !messageTrim)
+      if(!phoneTrim && !messageTrim) {
         alertMsg += 'Funkcje "Wyślij SMS", "Zadzwoń" i "Udostępnij tekst" nie będą działać.';
-      else if (!phoneTrim)
+      }
+      else if(!phoneTrim) {
         alertMsg += 'Funkcje "Wyślij SMS" i "Zadzwoń" nie będą działać.';
-      else if (!messageTrim)
+      }
+      else if(!messageTrim) {
         alertMsg += 'Funkcje "Wyślij SMS" i "Udostępnij tekst" nie będą działać.';
+      }
       Alert.alert('Uwaga', alertMsg);
-    } else {
+    }
+    else {
       Alert.alert('Ustawienia zapisane pomyślnie');
     }
   };
 
   return (
     <View style={{ padding: 20 }}>
-      <SettingsInput
+      <SettingsInputField
         value={phone}
         onChangeText={setPhone}
         placeholder="Numer telefonu"
         keyboardType="phone-pad"
       />
-      <SettingsInput
+      <SettingsInputField
         value={message}
         onChangeText={setMessage}
-        placeholder="Treść SMS"
+        placeholder="Treść wiadomości"
       />
       <PrimaryButton title="Zapisz" onPress={save} />
     </View>
